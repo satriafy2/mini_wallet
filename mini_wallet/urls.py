@@ -17,12 +17,13 @@ from django.contrib import admin
 from django.urls import include, path
 
 from mini_wallet.authentication.views import init_wallet
-from mini_wallet.wallet.views import WalletView
+from mini_wallet.wallet.views import WalletView, use_wallet
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include([
-        path('init', init_wallet),
-        path('wallet', WalletView.as_view()),
+        path('init', init_wallet, name='init-wallet'),
+        path('wallet', WalletView.as_view(), name='wallet'),
+        path('wallet/<str:action>', use_wallet, name='use-wallet'),
     ]))
 ]

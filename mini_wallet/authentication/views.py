@@ -1,9 +1,7 @@
-import hashlib
-
-from datetime import datetime, timedelta
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from mini_wallet.authentication.models import User, UserLogging
+from mini_wallet.authentication.models import User
+from mini_wallet.utils import generate_token
 from mini_wallet.wallet.models import Wallet
 
 
@@ -29,15 +27,8 @@ def init_wallet(request):
 
     return JsonResponse({
         "data": {
-            "token": _generate_token(customer)
+            "token": generate_token(customer)
         },
         "status": "success"
     }, status=200)
 
-
-def _generate_token(user):
-    expired = datetime.now() + timedelta(hours=2)
-    token = f"{user.id}::{expired.isoformat()}"
-    token = hashlib.sha256(token.encode('utf-8')).hexdigest()
-    UserLogging(user=user, token=token, expired=expired).save()
-    return token

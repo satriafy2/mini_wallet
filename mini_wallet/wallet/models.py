@@ -1,5 +1,4 @@
 import uuid
-
 from django.db import models
 
 
@@ -50,4 +49,6 @@ class UsageHistory(models.Model):
         related_name='usage_history'
     )
     amount = models.DecimalField(max_digits=10, decimal_places=2)
+    reference_id = models.UUIDField(unique=True)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    action = models.CharField(max_length=12, choices=ACTION_CHOICES)
