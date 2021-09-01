@@ -12,7 +12,6 @@ def authenticate_user(function):
 
             if token[0] == 'Token':
                 token = UserLogging.objects.filter(token=token[1]).first()
-
                 if token and token.expired > timezone.now():
                     request.user = token.user
                     return function(request, *args, **kwargs)
